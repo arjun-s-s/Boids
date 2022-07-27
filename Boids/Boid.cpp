@@ -30,10 +30,12 @@ void Boid::update_physics()
 	velocity.y += acceleration.y;
 
 
-	if (position.x > 1280) position.x = 0;
-	else if (position.x < 0) position.x = 1280;
-	if (position.y > 720) position.y = 0;
-	else if (position.y < 0) position.y = 720;
+	if (position.x > 1280 && velocity.x > 0) position.x -= 1280;
+	else if (position.x < 0 && velocity.x < 0) position.x += 1280;
+	if (position.y > 720 && velocity.y > 0) position.y -= 720;
+	else if (position.y < 0 && velocity.y < 0) position.y += 720;
+
+
 
 }
 
@@ -57,7 +59,9 @@ float Boid::distance(sf::Vector2f position)
 
 void Boid::orientation_update()
 {
-	float angle = 255 + (asin(velocity.y / velocity.x) / 6.28) * 360;
+	float angle = atan2(velocity.x, -velocity.y) * 180 / 3.1415926
+		;
+
 	arrow.setRotation(angle);
 }
 
@@ -66,15 +70,17 @@ void Boid::Seperation(Boid boid[], float num_boids, float perception_radius, flo
 	//stuff
 }
 
-void Boid::Alignment(Boid boid[], float num_boids, float perception_radius, float strength)
+void Boid::Alignment(std::vector<Boid> boids, float perception_radius, float strength)
 {
 	sf::Vector2f sum_velocity(0.0f, 0.0f);
 
-	for (int i = 0; i < num_boids; i++)
+	float num_boids = boids.size();
+
+	for (int i = 0; i < boids.size(); i++)
 	{
-		if (this->velocity != boid[i].get_velocity() && boid[i].distance(this->position) < perception_radius) //not sure about 'this->' part. Basically filtering out boids we're comparing to.
+		if (this->position != boids[i].get_position() && boids[i].distance(this->position) < perception_radius) //not sure about 'this->' part. Basically filtering out boids we're comparing to.
 		{
-			sum_velocity += boid[i].get_velocity();
+			sum_velocity += boids[i].get_velocity();
 		}
 	}
 
@@ -83,34 +89,17 @@ void Boid::Alignment(Boid boid[], float num_boids, float perception_radius, floa
 
 }
 
-void Boid::AlignmentTemp(std::vector<Boid> boid, float num_boids, float perception_radius, float strength)
-{
-	sf::Vector2f sum_velocity(0.0f, 0.0f);
-
-	int count = 0;
-
-	for (int i = 0; i < boid.size(); i++)
-	{
-		if (this->velocity != boid[i].get_velocity() && boid[i].distance(this->position) < perception_radius) //not sure about 'this->' part. Basically filtering out boids we're comparing to.
-		{
-			sum_velocity += boid[i].get_velocity();
-		}
-	}
-
-	sum_velocity *= 1 / num_boids;
-	this->acceleration += (sum_velocity - this->velocity) * strength;
-
-}
-
-void Boid::Cohesion(Boid boid[], float num_boids, float perception_radius, float strength)
+void Boid::Cohesion(std::vector<Boid> boids, float perception_radius, float strength)
 {
 	sf::Vector2f sum_positon(0.0f, 0.0f);
 
-	for (int i = 0; i < num_boids; i++)
+	float num_boids = boids.size();
+
+	for (int i = 0; i < boids.size(); i++)
 	{
-		if (this->position != boid[i].get_position() && boid[i].distance(this->position) < perception_radius) //not sure about 'this->' part. Basically filtering out boids we're comparing to.
+		if (boids[i].distance(this->position) < perception_radius) //not sure about 'this->' part. Basically filtering out boids we're comparing to.
 		{
-			sum_positon += boid[i].get_position();
+			sum_positon += boids[i].get_position();
 		}
 	}
 

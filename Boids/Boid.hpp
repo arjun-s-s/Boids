@@ -42,9 +42,8 @@ public:
 	void normalise_velocity(float magnitude_velocity);
 
 	void Seperation(Boid boid[], float num_boids, float perception_radius, float strength);
-	void Alignment(Boid boid[], float num_boids, float perception_radius, float strength);
-	void AlignmentTemp(Boid boid[], float num_boids, float perception_radius, float strength);
-	void Cohesion(Boid boid[], float num_boids, float perception_radius, float strength);
+	void Alignment(std::vector<Boid> boids, float perception_radius, float strength);
+	void Cohesion(std::vector<Boid> boids, float perception_radius, float strength);
 	void orientation_update();
 	float distance(sf::Vector2f position);
 

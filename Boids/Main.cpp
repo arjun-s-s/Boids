@@ -4,15 +4,17 @@
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "Event Window");
+
+	//code for a game class
+	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+	int window_width = desktop.width;
+	int window_height = desktop.height;
+	sf::RenderWindow window(desktop, "Event Window");
+	window.create(sf::VideoMode(window_width, window_height, desktop.bitsPerPixel), "Boids", sf::Style::None);
 	window.setFramerateLimit(144);
 
-	int const num_boids = 200;
-	Boid boid[num_boids];
 
-
-
-
+	int const num_boids = 60;
 
 	std::vector<Boid> boids(num_boids);
 
@@ -31,12 +33,12 @@ int main()
 
 		for (int i = 0; i < num_boids; i++)
 		{
-			boid[i].update_physics();
-			boid[i].Cohesion(boid, num_boids, 20, 1);
-			boid[i].Alignment(boid, num_boids, 20, 1);
-			boid[i].normalise_velocity(1);
-			boid[i].orientation_update();
-			boid[i].render(window);
+			boids[i].update_physics();
+			boids[i].Cohesion(boids, 50, 1);
+			boids[i].Alignment(boids, 50, 1);
+			boids[i].normalise_velocity(1);
+			boids[i].orientation_update();
+			boids[i].render(window);
 		}
 
 
