@@ -11,9 +11,10 @@ const int window_width = desktopTemp.width;
 Boid::Boid()
 {
 		float x = 17;
-		position.x = 100;
-		position.y = 100;
-		maxSpeed = 0.07;
+		position = Avector(0, 0);
+		velocity = Avector(0, 0);
+		acceleration = Avector(0, 0);
+		maxSpeed = .1;
 		maxForce = 0.5;
 
 		//creating shape
@@ -33,28 +34,28 @@ void Boid::render(sf::RenderWindow& wind)
 	wind.draw(arrow);
 }
 
+void Boid::applyForce(Avector force)
+{
+	acceleration.addVector(force);
+}
+
 void Boid::update()
 {
 
+	Avector force(.2, .3);
+	applyForce(force);
 
-	acceleration.x = ((rand() % 2000) - 1000) * 0.00001;
-	acceleration.y = ((rand() % 2000) - 1000) * 0.00001;
-
-	velocity.x += acceleration.x;
-	velocity.y += acceleration.y;
+	//To make the slow down not as abrupt
+	//acceleration.mulScalar(1);
+	// Update velocity
+	velocity.addVector(acceleration);
+	// Limit speed
 	velocity.limit(maxSpeed);
-	position.x += velocity.x;
-	position.y += velocity.y;
-
-	acceleration.x = 0;
-	acceleration.y = 0;
+	position.addVector(velocity);
+	// Reset accelertion to 0 each cycle
+	acceleration.mulScalar(0);
 
 	arrow.setPosition(position.x, position.y);
-
-	
-
-
-
 }
 
 void Boid::windowEdge()

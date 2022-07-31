@@ -17,6 +17,8 @@ int main()
 
 	while (window.isOpen())
 	{
+		
+
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -26,11 +28,12 @@ int main()
 
 
 		//update physics
-
 		window.clear();
+
 		boid.update();
 		boid.render(window);
 		boid.windowEdge();
+
 
 		window.display();
 	}

@@ -19,7 +19,7 @@ public:
 
 	
 	void windowEdge();
-	void applyForce();
+	void applyForce(Avector force);
 	void update();
 
 
