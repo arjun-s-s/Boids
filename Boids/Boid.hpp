@@ -16,5 +16,11 @@ public:
 	Boid();
 
 	void render(sf::RenderWindow& wind);
+
+	
+	void windowEdge();
+	void applyForce();
 	void update();
+
+
 };

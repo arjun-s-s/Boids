@@ -60,3 +60,4 @@ void Avector::limit(float max)
 		mulScalar(max);
 	}
 }
+

@@ -30,6 +30,7 @@ int main()
 		window.clear();
 		boid.update();
 		boid.render(window);
+		boid.windowEdge();
 
 		window.display();
 	}

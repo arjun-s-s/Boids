@@ -3,6 +3,11 @@
 #include <SFML/Window.hpp>
 
 
+//The width and height of the desktop screen - global variables
+sf::VideoMode desktopTemp = sf::VideoMode::getDesktopMode();
+const int window_height = desktopTemp.height;
+const int window_width = desktopTemp.width;
+
 Boid::Boid()
 {
 		float x = 17;
@@ -44,11 +49,6 @@ void Boid::update()
 	acceleration.x = 0;
 	acceleration.y = 0;
 
-	if (position.x < 0)  position.x += 1280;
-	if (position.x > 1280) position.x -= 1280;
-	if (position.y < 0) position.y += 720;
-	if (position.y < 0) position.y -= 720;
-
 	arrow.setPosition(position.x, position.y);
 
 	
@@ -57,4 +57,11 @@ void Boid::update()
 
 }
 
+void Boid::windowEdge()
+{
+	if (position.x < 0) position.x += window_width;
+	if (position.y < 0) position.y += window_height;
+	if (position.x > window_width) position.x -= window_width;
+	if (position.y > window_height) position.y -= window_height;
+}
 
