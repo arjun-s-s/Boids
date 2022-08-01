@@ -22,12 +22,14 @@ public:
 	void windowEdge();
 
 	Avector Cohesion(std::vector<Boid> school);
+	Avector Alighment(std::vector<Boid> school);
+
 	float getAngle(Avector v) const;
 	void applyForce(Avector force);
 
 	
 
-	void update();
+	void update(std::vector<Boid> &school);
 
 
 

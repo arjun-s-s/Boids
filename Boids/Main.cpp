@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include "Boid.hpp"
+#include "School.hpp"
 
 int main()
 {
@@ -12,8 +13,16 @@ int main()
 	window.setFramerateLimit(60);
 
 
-	Boid boid;
-	boid.createShape();
+	School s;
+	int school_size = 50;
+
+
+	for (int i = 0; i < school_size; i++) {
+		Boid boid_temp;
+		s.addBoid(boid_temp);
+		s.school[i].createShape();
+	}
+
 
 	while (window.isOpen())
 	{
@@ -29,10 +38,13 @@ int main()
 
 		//update physics
 		window.clear();
-
-		boid.update();
-		boid.render(window);
-		boid.windowEdge();
+		for (int i = 0; i < school_size; i++)
+		{
+			s.school[i].update(s.school);
+			s.school[i].windowEdge();
+			s.school[i].render(window);
+			
+		}
 
 
 		window.display();

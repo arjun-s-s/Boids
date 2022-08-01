@@ -15,12 +15,12 @@ const int window_width = desktopTemp.width;
 Boid::Boid()
 {
 
-		position = Avector(100, 100);
-		velocity = Avector(0, 0);
-		acceleration = Avector(0, 0);
-		maxSpeed = 100;
-		maxForce = 0.001;
-		perceptionRadius = 30;
+		position = Avector(rand() % window_width, rand() % window_height);
+		velocity = Avector((rand() % 20) - 10, (rand() % 20) - 10);
+		acceleration = Avector((rand() % 20) - 10, (rand() % 20) - 10);
+		maxSpeed = 7;
+		maxForce = 10;
+		perceptionRadius = 20000;
 
 		
 }
@@ -52,14 +52,17 @@ void Boid::applyForce(Avector force)
 	acceleration.addVector(force);
 }
 
-void Boid::update()
+void Boid::update(std::vector<Boid> &school)
 {
-
-	Avector force(((rand() % 200) - 100) * 0.01, ((rand() % 200) - 100) * 0.01);
-	applyForce(force);
+	//adds random nature to the boid
+	//Avector force(((rand() % 200) - 100) * 0.01, ((rand() % 200) - 100) * 0.01);
+	//applyForce(force);
+	applyForce(Cohesion(school));
+	//applyForce(Alighment(school));
 	//To make the slow down not as abrupt
-	acceleration.mulScalar(.35);
+	//acceleration.mulScalar(.35);
 	// Update velocity
+	acceleration.limit(maxForce);
 	velocity.addVector(acceleration);
 	// Limit speed
 	velocity.limit(maxSpeed);
@@ -97,12 +100,13 @@ Avector Boid::Cohesion(std::vector<Boid> school)
 		if ((d > 0) && (d < perceptionRadius))
 		{
 			average_position.addVector(school[i].position);
+			count++;
 		}
 
 		if (count > 0)
 		{
 			average_position.mulScalar(1 / count);
-			return average_position;
+			return Avector::subTwoVector(average_position, position);
 		}
 
 		else
@@ -114,6 +118,41 @@ Avector Boid::Cohesion(std::vector<Boid> school)
 
 	Avector s(0, 0);
 	return s;
+
+}
+
+Avector Boid::Alighment(std::vector<Boid> school)
+{
+	Avector average_velocity(0, 0);
+
+	for (int i = 0; i < school.size(); i++)
+	{
+		float d = position.distance(school[i].position);
+		int count = 0;
+
+		if ((d > 0) && (d < perceptionRadius))
+		{
+			average_velocity.addVector(school[i].velocity);
+			count++;
+		}
+
+		if (count > 0)
+		{
+			average_velocity.mulScalar(1 / count);
+			average_velocity.normalise();
+			average_velocity.mulScalar(maxSpeed);
+
+			Avector force = Avector::subTwoVector(average_velocity, velocity); // want a force towards the average velocity (visualise with triangle)
+			force.limit(maxForce);
+			return force;
+		}
+
+		else
+		{
+			Avector temp(0, 0);
+			return temp;
+		}
+	}
 }
 
 

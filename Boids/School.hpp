@@ -1,6 +1,7 @@
 #pragma once
 #include "School.hpp"
 #include "Boid.hpp"
+#include "Avector.hpp"
 #include <vector>
 
 
@@ -11,5 +12,6 @@ public:
 
 	School() {};
 
-
+	int getSize();
+	void addBoid(Boid &boid);
 };
