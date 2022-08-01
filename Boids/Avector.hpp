@@ -22,6 +22,7 @@ public:
 	void addVector(Avector v);
 	void subVector(Avector v);
 	static Avector subTwoVector(Avector v1, Avector v2);
+	float distance(Avector v) const;
 
 	void mulScalar(float mu);
 

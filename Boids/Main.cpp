@@ -9,11 +9,11 @@ int main()
 	int window_width = desktop.width;
 	int window_height = desktop.height;
 	window.create(sf::VideoMode(window_width, window_height, desktop.bitsPerPixel), "Boids", sf::Style::None);
-
+	window.setFramerateLimit(60);
 
 
 	Boid boid;
-
+	boid.createShape();
 
 	while (window.isOpen())
 	{

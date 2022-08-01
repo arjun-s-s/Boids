@@ -2,7 +2,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include "Avector.hpp"
-
 class Boid
 {
 public:
@@ -11,16 +10,26 @@ public:
 	Avector acceleration;
 	float maxSpeed;
 	float maxForce;
+	float perceptionRadius;
 	sf::ConvexShape arrow;
 
 	Boid();
 
+	void createShape();
 	void render(sf::RenderWindow& wind);
 
 	
 	void windowEdge();
+
+	Avector Cohesion(std::vector<Boid> school);
+	float getAngle(Avector v) const;
 	void applyForce(Avector force);
+
+	
+
 	void update();
 
 
+
 };
+

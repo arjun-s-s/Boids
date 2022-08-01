@@ -24,12 +24,18 @@
     <ClCompile Include="Avector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="School.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Boid.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Avector.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="School.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

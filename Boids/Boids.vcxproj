@@ -136,10 +136,12 @@
     <ClCompile Include="Avector.cpp" />
     <ClCompile Include="Boid.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="School.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Avector.hpp" />
     <ClInclude Include="Boid.hpp" />
+    <ClInclude Include="School.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
