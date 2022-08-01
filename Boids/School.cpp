@@ -7,3 +7,4 @@ int School::getSize()
 }
 
 void School::addBoid(Boid &boid) { school.push_back(boid); }
+

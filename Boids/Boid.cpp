@@ -17,10 +17,10 @@ Boid::Boid()
 
 		position = Avector(rand() % window_width, rand() % window_height);
 		velocity = Avector((rand() % 20) - 10, (rand() % 20) - 10);
-		acceleration = Avector((rand() % 20) - 10, (rand() % 20) - 10);
+		acceleration = Avector(0,0);
 		maxSpeed = 7;
-		maxForce = 10;
-		perceptionRadius = 20000;
+		maxForce = 7;
+		perceptionRadius = 60;
 
 		
 }
@@ -39,7 +39,9 @@ void Boid::createShape()
 	float x = 17;
 	arrow.setPointCount(4);
 	arrow.setPosition(position.x, position.y);
-	arrow.setFillColor(sf::Color::White);
+	arrow.setFillColor(sf::Color::Color(60,50,0));
+	arrow.setOutlineThickness(1);
+	arrow.setOutlineColor(sf::Color::Color(120, 100, 0));
 	arrow.setPoint(0, sf::Vector2f(x / 5, 0));
 	arrow.setPoint(1, sf::Vector2f(x / 2, 1 * x / 5));
 	arrow.setPoint(2, sf::Vector2f(4 * x / 5, 0));
@@ -57,12 +59,11 @@ void Boid::update(std::vector<Boid> &school)
 	//adds random nature to the boid
 	//Avector force(((rand() % 200) - 100) * 0.01, ((rand() % 200) - 100) * 0.01);
 	//applyForce(force);
-	applyForce(Cohesion(school));
+	applyForce((Cohesion(school)));
 	//applyForce(Alighment(school));
 	//To make the slow down not as abrupt
-	//acceleration.mulScalar(.35);
-	// Update velocity
 	acceleration.limit(maxForce);
+	// Update velocity
 	velocity.addVector(acceleration);
 	// Limit speed
 	velocity.limit(maxSpeed);
@@ -88,32 +89,34 @@ float Boid::getAngle(Avector v) const
 }
 
 
-Avector Boid::Cohesion(std::vector<Boid> school)
+Avector Boid::Cohesion(std::vector<Boid> &school)
 {
 	Avector average_position(0, 0);
+	int count = 0;
 
 	for (int i = 0; i < school.size(); i++)
 	{
 		float d = position.distance(school[i].position);
-		int count = 0;
-
+		
 		if ((d > 0) && (d < perceptionRadius))
 		{
 			average_position.addVector(school[i].position);
 			count++;
 		}
+	}
 
-		if (count > 0)
-		{
-			average_position.mulScalar(1 / count);
-			return Avector::subTwoVector(average_position, position);
-		}
+	if (count > 0)
+	{
+		average_position.mulScalar(1 / count);
+		average_position = Avector::subTwoVector(average_position, position);
+		return average_position;
+	}
 
-		else
-		{
-			Avector temp(0, 0);
-			return temp;
-		}
+
+	else
+	{
+		Avector temp(0, 0);
+		return temp;
 	}
 
 	Avector s(0, 0);
@@ -124,11 +127,11 @@ Avector Boid::Cohesion(std::vector<Boid> school)
 Avector Boid::Alighment(std::vector<Boid> school)
 {
 	Avector average_velocity(0, 0);
+	int count = 0;
 
 	for (int i = 0; i < school.size(); i++)
 	{
 		float d = position.distance(school[i].position);
-		int count = 0;
 
 		if ((d > 0) && (d < perceptionRadius))
 		{
@@ -136,27 +139,26 @@ Avector Boid::Alighment(std::vector<Boid> school)
 			count++;
 		}
 
-		if (count > 0)
-		{
-			average_velocity.mulScalar(1 / count);
-			average_velocity.normalise();
-			average_velocity.mulScalar(maxSpeed);
+		
+	}
 
-			Avector force = Avector::subTwoVector(average_velocity, velocity); // want a force towards the average velocity (visualise with triangle)
-			force.limit(maxForce);
-			return force;
-		}
+	if (count > 0)
+	{
+		average_velocity.mulScalar(1 / count);
+		average_velocity.normalise();
+		average_velocity.mulScalar(maxSpeed);
 
-		else
-		{
-			Avector temp(0, 0);
-			return temp;
-		}
+		Avector force = Avector::subTwoVector(average_velocity, velocity); // want a force towards the average velocity (visualise with triangle)
+		force.limit(maxForce);
+		return force;
+	}
+
+	else
+	{
+		Avector temp(0, 0);
+		return temp;
 	}
 }
-
-
-
 
 
 

@@ -9,7 +9,7 @@ int main()
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	int window_width = desktop.width;
 	int window_height = desktop.height;
-	window.create(sf::VideoMode(window_width, window_height, desktop.bitsPerPixel), "Boids", sf::Style::None);
+	window.create(sf::VideoMode(window_width, window_height, desktop.bitsPerPixel), "Boids", sf::Style::Default);
 	window.setFramerateLimit(60);
 
 
@@ -38,13 +38,14 @@ int main()
 
 		//update physics
 		window.clear();
+
 		for (int i = 0; i < school_size; i++)
 		{
 			s.school[i].update(s.school);
 			s.school[i].windowEdge();
 			s.school[i].render(window);
-			
 		}
+
 
 
 		window.display();
