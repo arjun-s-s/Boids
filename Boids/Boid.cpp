@@ -18,23 +18,18 @@ Boid::Boid()
 		position = Avector(rand() % window_width, rand() % window_height);
 		velocity = Avector((rand() % 20) - 10, (rand() % 20) - 10);
 		acceleration = Avector(0,0);
-		maxSpeed = 7;
-		maxForce = 3;
+		maxSpeed = 10;
+		maxForce = 7;
 
-		cohMul = 20;
-		//sepMul = 3.6;
-		//aliMul = .5;
-		//cohMul = 1;
-		//sepMul = 3.6;
-		//aliMul = .5;
 
-		perceptionRadiusSep = 25;
-		perceptionRadiusAli = 30;
-		perceptionRadiusCoh = 200;
+		cohMul = 2;
+		sepMul = 8;
+		aliMul = .1;
 
-		//perceptionRadiusSep = 25;
-		//perceptionRadiusAli = 30;
-		//perceptionRadiusCoh = 100;
+	
+		perceptionRadiusCoh = 100;
+		perceptionRadiusSep = 60;
+		perceptionRadiusAli = 50;
 
 		
 }
@@ -43,14 +38,14 @@ void Boid::render(sf::RenderWindow& wind)
 {
 	arrow.setPosition(position.x, position.y);
 	arrow.setRotation(getAngle(velocity) + 180);
-	float colorValue = ((int)(100 + (velocity.magnitude()) * 10)) % 254;
-	arrow.setFillColor(sf::Color(colorValue, colorValue, 0));
+	float colorValue = ((int)(0 + (velocity.magnitude()) * 10)) % 254;
+	arrow.setFillColor(sf::Color(colorValue, rand() % 255, colorValue));
 	wind.draw(arrow);
 }
 
 void Boid::createShape()
 {
-	float x = 32;
+	float x = 1;
 	arrow.setPointCount(4);
 	arrow.setPosition(position.x, position.y);
 	arrow.setFillColor(sf::Color::Color(255,255,255));
@@ -71,7 +66,7 @@ void Boid::applyForce(Avector force)
 void Boid::update(std::vector<Boid> &school)
 {
 
-	Avector force(((rand() % 200) - 100) * 0.03, ((rand() % 200) - 100) * 0.03);
+	Avector force(((rand() % 200) - 100) * 0.01, ((rand() % 200) - 100) * 0.01);
 	applyForce(force);
 
 	applyForce(Cohesion(school));
@@ -88,25 +83,6 @@ void Boid::update(std::vector<Boid> &school)
 	acceleration.mulScalar(0);
 	arrow.setPosition(position.x, position.y);
 
-	//adds random nature to the boid
-	//Avector force(((rand() % 200) - 100) * 0.01, ((rand() % 200) - 100) * 0.01);
-	//applyForce(force);
-	//Avector cohForce = (Cohesion(school));
-	//cohForce.normalise();
-	//cohForce.mulScalar(cohMul);
-	//applyForce(cohForce);
-	//applyForce(Alighment(school));
-	//To make the slow down not as abrupt
-	//acceleration.limit(maxForce);
-	// Update velocity
-	//velocity.addVector(acceleration);
-	// Limit speed
-	//velocity.limit(maxSpeed);
-	//position.addVector(velocity);
-	
-	// Reset accelertion to 0 each cycle
-	//acceleration.mulScalar(0);
-	//arrow.setPosition(position.x, position.y);
 }
 
 void Boid::windowEdge()
@@ -151,8 +127,6 @@ Avector Boid::Cohesion(std::vector<Boid> &school)
 		Avector cohForceVector = Avector::subTwoVector(average_position, position);
 		cohForceVector.normalise();
 		cohForceVector.mulScalar(cohMul);
-		//average_position.mulScalar(maxSpeed);
-		//average_position.subVector(velocity);
 		return cohForceVector;
 	}
 

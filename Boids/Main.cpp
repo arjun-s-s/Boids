@@ -9,7 +9,7 @@ int main()
 	sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 	int window_width = desktop.width;
 	int window_height = desktop.height;
-	window.create(sf::VideoMode(window_width, window_height, desktop.bitsPerPixel), "Boids", sf::Style::Default);
+	window.create(sf::VideoMode(window_width, window_height, desktop.bitsPerPixel), "Boids", sf::Style::None);
 	window.setFramerateLimit(60);
 
 
