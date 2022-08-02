@@ -8,9 +8,19 @@ public:
 	Avector position;
 	Avector velocity;
 	Avector acceleration;
+
 	float maxSpeed;
 	float maxForce;
-	float perceptionRadius;
+
+	float perceptionRadiusSep;
+	float perceptionRadiusAli;
+	float perceptionRadiusCoh;
+
+	float cohMul;
+	float sepMul;
+	float aliMul;
+
+
 	sf::ConvexShape arrow;
 
 	Boid();
@@ -22,7 +32,8 @@ public:
 	void windowEdge();
 
 	Avector Cohesion(std::vector<Boid> &school);
-	Avector Alighment(std::vector<Boid> school);
+	Avector Alighment(std::vector<Boid> &school);
+	Avector Seperation(std::vector<Boid> &school);
 
 	float getAngle(Avector v) const;
 	void applyForce(Avector force);

@@ -9,7 +9,10 @@ public:
 	float x;
 	float y;
 
-	Avector() {}
+	Avector() {
+		x = 0;
+		y = 0;
+	}
 
 	Avector(float xcoord, float ycoord)
 	{

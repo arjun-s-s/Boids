@@ -46,8 +46,12 @@ float Avector::magnitude()
 
 void Avector::normalise()
 {
-	x /= magnitude();
-	y /= magnitude();
+	if (magnitude() > 0)
+	{
+		x /= magnitude();
+		y /= magnitude();
+	}
+	
 }
 
 void Avector::limit(float max)

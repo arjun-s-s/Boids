@@ -14,7 +14,7 @@ int main()
 
 
 	School s;
-	int school_size = 50;
+	int school_size = 300;
 
 
 	for (int i = 0; i < school_size; i++) {
@@ -41,8 +41,8 @@ int main()
 
 		for (int i = 0; i < school_size; i++)
 		{
-			s.school[i].update(s.school);
 			s.school[i].windowEdge();
+			s.school[i].update(s.school);
 			s.school[i].render(window);
 		}
 
